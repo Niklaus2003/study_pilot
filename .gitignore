@@ -1,0 +1,23 @@
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# Configuration and Secrets
+.env
+
+# Local Timetables and Data
+syllabus.json
+timetable.json
+extracted_syllabus.json
+
+# PDFs (Ignore all except the sample input syllabus)
+*.pdf
+!sample_syllabus.pdf
