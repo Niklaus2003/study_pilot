@@ -323,19 +323,27 @@ def main():
                         
         if st.session_state.get('syllabus_subjects'):
             st.markdown(f"**Current Syllabus:** `{st.session_state.get('uploaded_pdf_name', 'syllabus.json')}`")
-            if st.button("🗑️ Clear Current Syllabus"):
+            
+        has_data = bool(st.session_state.get('syllabus_subjects') or st.session_state.get('timetable_data'))
+        if has_data:
+            if st.button("🗑️ Clear & Start Fresh", use_container_width=True):
                 st.session_state.pop('syllabus_subjects', None)
                 st.session_state.pop('uploaded_pdf_name', None)
-                # Remove file if exists
-                if Path("syllabus.json").exists():
-                    try:
-                        os.remove("syllabus.json")
-                    except:
-                        pass
-                st.success("Syllabus cleared.")
+                st.session_state.pop('timetable_data', None)
+                st.session_state.pop('allocated', None)
+                
+                # Delete local files
+                for filename in ["syllabus.json", "timetable.json", "study_plan.pdf"]:
+                    f_path = Path(filename)
+                    if f_path.exists():
+                        try:
+                            os.remove(f_path)
+                        except:
+                            pass
+                st.success("All configurations and plans cleared successfully!")
                 st.rerun()
         else:
-            st.info("Upload a PDF to parse. If no syllabus is loaded, default mock schedule can be generated.")
+            st.info("Upload a PDF to parse. If no syllabus is loaded, a simulated schedule can be generated.")
             
         st.markdown("---")
         st.header("⚙️ Timetable Planner Settings")
